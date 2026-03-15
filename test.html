@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест на профессию</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #f4f6fb 0%, #e9eefa 100%);
+            color: #333;
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        /* HEADER (как на главной) */
+        header {
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #4a6cf7;
+            letter-spacing: -0.5px;
+        }
+        .nav a {
+            margin-left: 30px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .nav a:hover {
+            color: #4a6cf7;
+        }
+
+        /* Основной контейнер теста */
+        .test-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .test-card {
+            background: white;
+            border-radius: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            width: 100%;
+            max-width: 700px;
+            padding: 40px;
+            transition: all 0.3s;
+        }
+
+        /* Прогресс-бар */
+        .progress {
+            margin-bottom: 30px;
+        }
+        .progress-bar {
+            height: 8px;
+            background: #e0e7ff;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #4a6cf7;
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 20px;
+        }
+        .progress-text {
+            text-align: right;
+            font-size: 14px;
+            color: #666;
+            margin-top: 8px;
+        }
+
+        /* Вопрос и ответы */
+        .question {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #222;
+            line-height: 1.4;
+        }
+
+        .answers {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .answer-btn {
+            background: #f8faff;
+            border: 2px solid transparent;
+            border-radius: 30px;
+            padding: 16px 24px;
+            font-size: 16px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .answer-btn:hover {
+            background: #e9efff;
+            border-color: #4a6cf7;
+            transform: scale(1.01);
+        }
+
+        /* Кнопка "Далее" */
+        .next-btn {
+            background: #4a6cf7;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 16px 30px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.3s;
+            box-shadow: 0 8px 20px rgba(74,108,247,0.3);
+            margin-top: 20px;
+        }
+
+        .next-btn:disabled {
+            background: #b7c4ff;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .next-btn:hover:not(:disabled) {
+            background: #3a5be0;
+            transform: translateY(-2px);
+        }
+
+        /* Результат */
+        .result-block {
+            text-align: center;
+            padding: 20px 0;
+        }
+        .result-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #4a6cf7;
+            margin-bottom: 15px;
+        }
+        .result-desc {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 30px;
+        }
+        .restart-btn {
+            background: #4a6cf7;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 16px 30px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 8px 20px rgba(74,108,247,0.3);
+            margin-top: 20px;
+        }
+        .restart-btn:hover {
+            background: #3a5be0;
+            transform: scale(1.02);
+        }
+
+        /* Ссылка на рандомайзер */
+        .randomizer-link {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .randomizer-link a {
+            background: white;
+            color: #4a6cf7;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: 0.3s;
+            display: inline-block;
+        }
+        .randomizer-link a:hover {
+            background: #e9efff;
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(74,108,247,0.2);
+        }
+
+        /* FOOTER (как на главной) */
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: #222;
+            color: #aaa;
+            font-size: 14px;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+            .nav a {
+                margin-left: 15px;
+                font-size: 14px;
+            }
+            .test-card {
+                padding: 25px;
+            }
+            .question {
+                font-size: 20px;
+            }
+            .answer-btn {
+                padding: 14px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Профессия по душе</div>
+        <div class="nav">
+            <a href="index.html">Главная</a>
+            <a href="test.html">Тест</a>
+            <a href="work.html">Профессии</a>
+        </div>
+    </header>
+
+    <div class="test-container">
+        <div class="test-card" id="testCard">
+            <!-- Сюда будет динамически рендериться тест или результат -->
+        </div>
+
+        <!-- Блок ссылки на рандомайзер под карточкой -->
+        <div class="randomizer-link">
+            <a href="work.html">🎲 Не хочешь проходить тест? Просто посмотри случайную профессию →</a>
+        </div>
+    </div>
+
+    <footer>
+        © 2026 Профессия по душе. Все права защищены.
+    </footer>
+
+    <script>
+        // ---------- Данные теста ----------
+        // 30 вопросов с вариантами ответов и привязкой к категориям
+        const questions = [
+            {
+                text: "Как вы предпочитаете проводить свободное время?",
+                answers: [
+                    { text: "Читаю технические блоги или программирую", scores: { it: 2, design: 0, marketing: 0, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Рисую, фотографирую, занимаюсь творчеством", scores: { it: 0, design: 2, marketing: 0, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Общаюсь с друзьями, веду соцсети", scores: { it: 0, design: 0, marketing: 2, management: 1, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Изучаю новости о строительстве и ремонте", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 2, medicine: 0, education: 0, law: 0 } }
+                ]
+            },
+            {
+                text: "Что вам ближе в работе?",
+                answers: [
+                    { text: "Создавать что-то новое с помощью кода", scores: { it: 2, design: 1, marketing: 0, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Продумывать визуал и эстетику", scores: { it: 0, design: 2, marketing: 1, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Планировать и управлять людьми", scores: { it: 0, design: 0, marketing: 1, management: 2, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Заботиться о здоровье людей", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 0, medicine: 2, education: 0, law: 0 } }
+                ]
+            },
+            {
+                text: "Какая школьная дисциплина давалась легче всего?",
+                answers: [
+                    { text: "Математика, информатика", scores: { it: 2, design: 0, marketing: 0, management: 1, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Рисование, черчение, МХК", scores: { it: 0, design: 2, marketing: 0, management: 0, construction: 1, medicine: 0, education: 0, law: 0 } },
+                    { text: "Литература, языки, обществознание", scores: { it: 0, design: 0, marketing: 2, management: 1, construction: 0, medicine: 0, education: 1, law: 1 } },
+                    { text: "Биология, химия", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 0, medicine: 2, education: 0, law: 0 } }
+                ]
+            },
+            {
+                text: "Как вы ведете себя в конфликтной ситуации?",
+                answers: [
+                    { text: "Ищу техническое решение, анализирую данные", scores: { it: 2, design: 0, marketing: 0, management: 0, construction: 0, medicine: 0, education: 0, law: 1 } },
+                    { text: "Стараюсь сгладить и найти компромисс", scores: { it: 0, design: 0, marketing: 2, management: 1, construction: 0, medicine: 0, education: 1, law: 0 } },
+                    { text: "Беру инициативу и организую процесс", scores: { it: 0, design: 0, marketing: 1, management: 2, construction: 1, medicine: 0, education: 0, law: 0 } },
+                    { text: "Руководствуюсь правилами и законами", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 0, medicine: 0, education: 0, law: 2 } }
+                ]
+            },
+            {
+                text: "Что вас вдохновляет?",
+                answers: [
+                    { text: "Инновации и новые технологии", scores: { it: 2, design: 0, marketing: 1, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Красивые здания, интерьеры, природа", scores: { it: 0, design: 2, marketing: 0, management: 0, construction: 2, medicine: 0, education: 0, law: 0 } },
+                    { text: "Успешные компании, стартапы, бизнес", scores: { it: 0, design: 0, marketing: 2, management: 2, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Помощь другим, забота о людях", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 0, medicine: 2, education: 2, law: 0 } }
+                ]
+            },
+            {
+                text: "Какой тип задач вам нравится больше?",
+                answers: [
+                    { text: "Решать головоломки, писать алгоритмы", scores: { it: 2, design: 0, marketing: 0, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Создавать макеты, прототипы, рисовать", scores: { it: 0, design: 2, marketing: 0, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Общаться, убеждать, продвигать идеи", scores: { it: 0, design: 0, marketing: 2, management: 1, construction: 0, medicine: 0, education: 0, law: 1 } },
+                    { text: "Контролировать качество, проверять", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 1, medicine: 1, education: 0, law: 2 } }
+                ]
+            },
+            {
+                text: "Где бы вы хотели работать?",
+                answers: [
+                    { text: "В IT-компании, офисе с современным дизайном", scores: { it: 2, design: 0, marketing: 0, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "В дизайн-студии, рекламном агентстве", scores: { it: 0, design: 2, marketing: 1, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "На стройке, в проектной организации", scores: { it: 0, design: 1, marketing: 0, management: 0, construction: 2, medicine: 0, education: 0, law: 0 } },
+                    { text: "В больнице, школе, университете", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 0, medicine: 2, education: 2, law: 0 } }
+                ]
+            },
+            {
+                text: "Что для вас важно в будущей профессии?",
+                answers: [
+                    { text: "Высокий доход и карьерный рост", scores: { it: 1, design: 0, marketing: 1, management: 2, construction: 1, medicine: 0, education: 0, law: 1 } },
+                    { text: "Творческая самореализация", scores: { it: 0, design: 2, marketing: 1, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Стабильность и защищенность", scores: { it: 0, design: 0, marketing: 0, management: 1, construction: 1, medicine: 1, education: 1, law: 2 } },
+                    { text: "Помощь обществу и людям", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 0, medicine: 2, education: 2, law: 1 } }
+                ]
+            },
+            {
+                text: "Какие навыки у вас лучше развиты?",
+                answers: [
+                    { text: "Логические, аналитические", scores: { it: 2, design: 0, marketing: 0, management: 1, construction: 0, medicine: 0, education: 0, law: 1 } },
+                    { text: "Коммуникативные, организаторские", scores: { it: 0, design: 0, marketing: 2, management: 2, construction: 0, medicine: 0, education: 1, law: 0 } },
+                    { text: "Художественные, креативные", scores: { it: 0, design: 2, marketing: 1, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Ручные, технические", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 2, medicine: 1, education: 0, law: 0 } }
+                ]
+            },
+            {
+                text: "Как вы относитесь к публичным выступлениям?",
+                answers: [
+                    { text: "Люблю быть в центре внимания", scores: { it: 0, design: 0, marketing: 2, management: 1, construction: 0, medicine: 0, education: 0, law: 1 } },
+                    { text: "Нормально, если нужно", scores: { it: 1, design: 1, marketing: 1, management: 1, construction: 1, medicine: 1, education: 1, law: 1 } },
+                    { text: "Стараюсь избегать, предпочитаю работать с техникой", scores: { it: 2, design: 0, marketing: 0, management: 0, construction: 2, medicine: 0, education: 0, law: 0 } },
+                    { text: "Готовлюсь тщательно, но выступаю уверенно", scores: { it: 0, design: 0, marketing: 1, management: 1, construction: 0, medicine: 1, education: 1, law: 1 } }
+                ]
+            },
+            {
+                text: "Вам нравится разбираться в технике?",
+                answers: [
+                    { text: "Да, это моё хобби", scores: { it: 2, design: 0, marketing: 0, management: 0, construction: 2, medicine: 0, education: 0, law: 0 } },
+                    { text: "Нет, мне ближе гуманитарные науки", scores: { it: 0, design: 1, marketing: 1, management: 1, construction: 0, medicine: 0, education: 1, law: 1 } },
+                    { text: "Иногда, если нужно по работе", scores: { it: 1, design: 0, marketing: 0, management: 1, construction: 1, medicine: 0, education: 0, law: 0 } },
+                    { text: "Совсем не интересуюсь", scores: { it: 0, design: 2, marketing: 0, management: 0, construction: 0, medicine: 1, education: 1, law: 0 } }
+                ]
+            },
+            {
+                text: "Что вы выберете для досуга?",
+                answers: [
+                    { text: "Собрать конструктор, починить прибор", scores: { it: 1, design: 0, marketing: 0, management: 0, construction: 2, medicine: 0, education: 0, law: 0 } },
+                    { text: "Посетить мастер-класс по живописи", scores: { it: 0, design: 2, marketing: 0, management: 0, construction: 0, medicine: 0, education: 1, law: 0 } },
+                    { text: "Сыграть в деловую игру, стратегию", scores: { it: 0, design: 0, marketing: 1, management: 2, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Посмотреть научно-популярный фильм о медицине", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 0, medicine: 2, education: 0, law: 0 } }
+                ]
+            },
+            {
+                text: "Как вы принимаете важные решения?",
+                answers: [
+                    { text: "На основе фактов и цифр", scores: { it: 2, design: 0, marketing: 1, management: 1, construction: 0, medicine: 1, education: 0, law: 1 } },
+                    { text: "Советуюсь с авторитетными людьми", scores: { it: 0, design: 0, marketing: 1, management: 1, construction: 0, medicine: 0, education: 1, law: 0 } },
+                    { text: "Доверяю интуиции и чувствам", scores: { it: 0, design: 2, marketing: 1, management: 0, construction: 0, medicine: 1, education: 0, law: 0 } },
+                    { text: "Руководствуюсь законом и инструкциями", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 0, medicine: 0, education: 0, law: 2 } }
+                ]
+            },
+            {
+                text: "Какая сфера вам кажется наиболее перспективной?",
+                answers: [
+                    { text: "Информационные технологии", scores: { it: 2, design: 0, marketing: 0, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Креативные индустрии", scores: { it: 0, design: 2, marketing: 1, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Строительство и недвижимость", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 2, medicine: 0, education: 0, law: 0 } },
+                    { text: "Медицина и образование", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 0, medicine: 2, education: 2, law: 0 } }
+                ]
+            },
+            {
+                text: "Что вам легче даётся?",
+                answers: [
+                    { text: "Работа с цифрами и кодами", scores: { it: 2, design: 0, marketing: 0, management: 1, construction: 0, medicine: 0, education: 0, law: 1 } },
+                    { text: "Общение с людьми и переговоры", scores: { it: 0, design: 0, marketing: 2, management: 1, construction: 0, medicine: 0, education: 1, law: 0 } },
+                    { text: "Создание красивых вещей", scores: { it: 0, design: 2, marketing: 0, management: 0, construction: 1, medicine: 0, education: 0, law: 0 } },
+                    { text: "Помощь другим, уход", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 0, medicine: 2, education: 1, law: 0 } }
+                ]
+            },
+            {
+                text: "Какой жанр фильмов вам нравится больше?",
+                answers: [
+                    { text: "Научная фантастика, техно-триллеры", scores: { it: 2, design: 0, marketing: 0, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Драмы, арт-хаус, красивые визуальные фильмы", scores: { it: 0, design: 2, marketing: 0, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Документальное кино о бизнесе, истории успеха", scores: { it: 0, design: 0, marketing: 2, management: 1, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Медицинские драмы, фильмы о врачах", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 0, medicine: 2, education: 0, law: 0 } }
+                ]
+            },
+            {
+                text: "Вы предпочитаете работать в команде или самостоятельно?",
+                answers: [
+                    { text: "В команде, обмениваясь идеями", scores: { it: 1, design: 1, marketing: 2, management: 2, construction: 1, medicine: 1, education: 1, law: 0 } },
+                    { text: "Самостоятельно, в своём ритме", scores: { it: 1, design: 2, marketing: 0, management: 0, construction: 1, medicine: 1, education: 0, law: 0 } },
+                    { text: "Лучше руководить командой", scores: { it: 0, design: 0, marketing: 1, management: 2, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Не имеет значения, главное — результат", scores: { it: 0, design: 0, marketing: 0, management: 1, construction: 1, medicine: 1, education: 1, law: 1 } }
+                ]
+            },
+            {
+                text: "Как вы относитесь к риску?",
+                answers: [
+                    { text: "Готов рискнуть ради высокой награды", scores: { it: 1, design: 0, marketing: 2, management: 2, construction: 1, medicine: 0, education: 0, law: 0 } },
+                    { text: "Стараюсь избегать риска", scores: { it: 1, design: 1, marketing: 0, management: 1, construction: 1, medicine: 2, education: 2, law: 1 } },
+                    { text: "Риск оправдан только после анализа", scores: { it: 2, design: 0, marketing: 1, management: 1, construction: 0, medicine: 1, education: 0, law: 1 } },
+                    { text: "Не люблю риск, предпочитаю стабильность", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 1, medicine: 2, education: 2, law: 1 } }
+                ]
+            },
+            {
+                text: "Какая деятельность вам ближе?",
+                answers: [
+                    { text: "Разработка программ и приложений", scores: { it: 2, design: 0, marketing: 0, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Проектирование интерьеров или зданий", scores: { it: 0, design: 2, marketing: 0, management: 0, construction: 2, medicine: 0, education: 0, law: 0 } },
+                    { text: "Организация мероприятий и рекламных кампаний", scores: { it: 0, design: 0, marketing: 2, management: 2, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Обучение и воспитание детей", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 0, medicine: 0, education: 2, law: 0 } }
+                ]
+            },
+            {
+                text: "Что вам интересно изучать?",
+                answers: [
+                    { text: "Новые языки программирования, фреймворки", scores: { it: 2, design: 0, marketing: 0, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Тренды в дизайне, искусстве", scores: { it: 0, design: 2, marketing: 1, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Современные технологии строительства", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 2, medicine: 0, education: 0, law: 0 } },
+                    { text: "Медицинские открытия, методы лечения", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 0, medicine: 2, education: 0, law: 0 } }
+                ]
+            },
+            {
+                text: "Как вы относитесь к рутинной работе?",
+                answers: [
+                    { text: "Спокойно, главное — результат", scores: { it: 1, design: 0, marketing: 1, management: 1, construction: 2, medicine: 1, education: 1, law: 1 } },
+                    { text: "Терпеть не могу, нужно разнообразие", scores: { it: 0, design: 2, marketing: 1, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Готов автоматизировать рутину", scores: { it: 2, design: 0, marketing: 0, management: 1, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Рутина успокаивает, даёт стабильность", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 1, medicine: 1, education: 1, law: 1 } }
+                ]
+            },
+            {
+                text: "Что важнее в работе?",
+                answers: [
+                    { text: "Интересные задачи и развитие", scores: { it: 2, design: 2, marketing: 1, management: 1, construction: 1, medicine: 1, education: 1, law: 1 } },
+                    { text: "Достойная оплата труда", scores: { it: 1, design: 1, marketing: 1, management: 2, construction: 2, medicine: 1, education: 0, law: 1 } },
+                    { text: "Коллектив и атмосфера", scores: { it: 0, design: 1, marketing: 2, management: 1, construction: 0, medicine: 0, education: 2, law: 0 } },
+                    { text: "Возможность помогать людям", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 0, medicine: 2, education: 2, law: 1 } }
+                ]
+            },
+            {
+                text: "Вы предпочитаете работать с вещами или с идеями?",
+                answers: [
+                    { text: "С идеями и концепциями", scores: { it: 2, design: 2, marketing: 2, management: 2, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "С конкретными предметами, инструментами", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 2, medicine: 1, education: 0, law: 0 } },
+                    { text: "С людьми", scores: { it: 0, design: 0, marketing: 2, management: 2, construction: 0, medicine: 2, education: 2, law: 2 } },
+                    { text: "С информацией и документами", scores: { it: 1, design: 0, marketing: 1, management: 1, construction: 0, medicine: 0, education: 0, law: 2 } }
+                ]
+            },
+            {
+                text: "Какая сфера деятельности вам кажется наиболее сложной?",
+                answers: [
+                    { text: "Программирование и IT", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } }, // Не добавляем баллы, т.к. это не предпочтение
+                    { text: "Творческие профессии", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Управление и бизнес", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Медицина и педагогика", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } }
+                ]
+            },
+            {
+                text: "Ваше хобби связано с:",
+                answers: [
+                    { text: "Компьютерами и гаджетами", scores: { it: 2, design: 0, marketing: 0, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Рисованием, рукоделием, дизайном", scores: { it: 0, design: 2, marketing: 0, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Спортом, активным отдыхом", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 0, medicine: 1, education: 0, law: 0 } },
+                    { text: "Чтением книг, самообразованием", scores: { it: 0, design: 0, marketing: 1, management: 1, construction: 0, medicine: 0, education: 1, law: 1 } }
+                ]
+            },
+            {
+                text: "Что вы цените в людях больше всего?",
+                answers: [
+                    { text: "Ум и профессионализм", scores: { it: 1, design: 0, marketing: 1, management: 1, construction: 0, medicine: 1, education: 1, law: 1 } },
+                    { text: "Креативность и нестандартность", scores: { it: 0, design: 2, marketing: 1, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Надёжность и ответственность", scores: { it: 0, design: 0, marketing: 0, management: 2, construction: 2, medicine: 1, education: 1, law: 1 } },
+                    { text: "Доброту и отзывчивость", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 0, medicine: 2, education: 2, law: 0 } }
+                ]
+            },
+            {
+                text: "Какой предмет вам нравился больше в школе?",
+                answers: [
+                    { text: "Информатика, физика", scores: { it: 2, design: 0, marketing: 0, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Изо, черчение, труд", scores: { it: 0, design: 2, marketing: 0, management: 0, construction: 2, medicine: 0, education: 0, law: 0 } },
+                    { text: "Обществознание, экономика", scores: { it: 0, design: 0, marketing: 2, management: 2, construction: 0, medicine: 0, education: 0, law: 1 } },
+                    { text: "Биология, химия", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 0, medicine: 2, education: 0, law: 0 } }
+                ]
+            },
+            {
+                text: "Вы любите решать сложные задачи?",
+                answers: [
+                    { text: "Да, это меня увлекает", scores: { it: 2, design: 1, marketing: 1, management: 1, construction: 1, medicine: 1, education: 0, law: 1 } },
+                    { text: "Иногда, если есть настроение", scores: { it: 1, design: 1, marketing: 1, management: 1, construction: 1, medicine: 1, education: 1, law: 1 } },
+                    { text: "Нет, предпочитаю простые и понятные", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 1, medicine: 1, education: 1, law: 0 } },
+                    { text: "Зависит от области", scores: { it: 1, design: 1, marketing: 1, management: 1, construction: 1, medicine: 1, education: 1, law: 1 } }
+                ]
+            },
+            {
+                text: "Что для вас идеальная работа?",
+                answers: [
+                    { text: "Возможность удалённой работы, гибкий график", scores: { it: 2, design: 1, marketing: 1, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Работа в красивом офисе, с творческими людьми", scores: { it: 0, design: 2, marketing: 1, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Чёткий график, стабильность, соцпакет", scores: { it: 0, design: 0, marketing: 0, management: 1, construction: 2, medicine: 2, education: 2, law: 1 } },
+                    { text: "Возможность постоянно учиться новому", scores: { it: 2, design: 1, marketing: 1, management: 1, construction: 1, medicine: 1, education: 2, law: 1 } }
+                ]
+            },
+            {
+                text: "Как вы реагируете на критику?",
+                answers: [
+                    { text: "Анализирую и делаю выводы", scores: { it: 2, design: 1, marketing: 1, management: 2, construction: 1, medicine: 1, education: 1, law: 1 } },
+                    { text: "Прислушиваюсь, но делаю по-своему", scores: { it: 0, design: 2, marketing: 1, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Обижаюсь, но стараюсь исправиться", scores: { it: 0, design: 0, marketing: 0, management: 0, construction: 0, medicine: 0, education: 1, law: 0 } },
+                    { text: "Игнорирую, если не согласен", scores: { it: 0, design: 1, marketing: 1, management: 1, construction: 0, medicine: 0, education: 0, law: 1 } }
+                ]
+            },
+            {
+                text: "Вам нравится работать с бумагами, документами?",
+                answers: [
+                    { text: "Нет, это скучно", scores: { it: 0, design: 1, marketing: 0, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Нормально, если нужно", scores: { it: 0, design: 0, marketing: 0, management: 1, construction: 0, medicine: 1, education: 1, law: 2 } },
+                    { text: "Терпеть не могу, лучше живое общение", scores: { it: 0, design: 1, marketing: 2, management: 0, construction: 0, medicine: 0, education: 0, law: 0 } },
+                    { text: "Люблю порядок и систематизацию", scores: { it: 1, design: 0, marketing: 0, management: 2, construction: 1, medicine: 0, education: 0, law: 2 } }
+                ]
+            }
+        ];
+
+        // Соответствие категорий и профессий (16 профессий)
+        const professionMap = {
+            it: [
+                { title: "Программист", desc: "Разрабатывает программное обеспечение, сайты, приложения. Востребован в IT-компаниях." },
+                { title: "Системный администратор", desc: "Отвечает за работу компьютерной техники и сетей в организации." }
+            ],
+            design: [
+                { title: "UX/UI-дизайнер", desc: "Проектирует удобные и красивые интерфейсы для сайтов и приложений." },
+                { title: "Графический дизайнер", desc: "Создаёт логотипы, брендбуки, полиграфию, рекламные материалы." }
+            ],
+            marketing: [
+                { title: "Маркетолог", desc: "Изучает рынок, продвигает товары и услуги, работает с рекламой и брендом." },
+                { title: "PR-менеджер", desc: "Формирует положительный имидж компании, взаимодействует со СМИ." }
+            ],
+            management: [
+                { title: "Менеджер проектов", desc: "Планирует задачи, управляет командой, контролирует сроки и бюджет." },
+                { title: "Бизнес-аналитик", desc: "Анализирует бизнес-процессы и предлагает решения для повышения эффективности." }
+            ],
+            construction: [
+                { title: "Инженер-строитель", desc: "Проектирует здания, контролирует строительные процессы." },
+                { title: "Архитектор", desc: "Создаёт архитектурные проекты, разрабатывает планировку зданий." }
+            ],
+            medicine: [
+                { title: "Врач", desc: "Лечит людей, ставит диагнозы, назначает лечение." },
+                { title: "Медсестра / Медбрат", desc: "Ухаживает за пациентами, выполняет назначения врача." }
+            ],
+            education: [
+                { title: "Учитель", desc: "Обучает детей в школе, передаёт знания по предмету." },
+                { title: "Педагог дополнительного образования", desc: "Ведёт кружки, секции, развивающие занятия." }
+            ],
+            law: [
+                { title: "Юрист", desc: "Консультирует по правовым вопросам, составляет договоры, представляет в суде." },
+                { title: "Адвокат", desc: "Защищает права клиентов в суде, оказывает юридическую помощь." }
+            ]
+        };
+
+        let currentQuestionIndex = 0;
+        let scores = {
+            it: 0,
+            design: 0,
+            marketing: 0,
+            management: 0,
+            construction: 0,
+            medicine: 0,
+            education: 0,
+            law: 0
+        };
+        let selectedAnswer = null; // индекс выбранного ответа для текущего вопроса
+
+        const testCard = document.getElementById('testCard');
+
+        function renderQuestion() {
+            const q = questions[currentQuestionIndex];
+            const progressPercent = ((currentQuestionIndex + 1) / questions.length) * 100;
+
+            let answersHtml = '';
+            q.answers.forEach((ans, idx) => {
+                const checkedAttr = (selectedAnswer === idx) ? 'style="background: #e9efff; border-color: #4a6cf7;"' : '';
+                answersHtml += `<div class="answer-btn" onclick="selectAnswer(${idx})" ${checkedAttr}>${ans.text}</div>`;
+            });
+
+            testCard.innerHTML = `
+                <div class="progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${progressPercent}%;"></div>
+                    </div>
+                    <div class="progress-text">Вопрос ${currentQuestionIndex + 1} из ${questions.length}</div>
+                </div>
+                <div class="question">${q.text}</div>
+                <div class="answers" id="answersContainer">
+                    ${answersHtml}
+                </div>
+                <button class="next-btn" id="nextBtn" ${selectedAnswer === null ? 'disabled' : ''}>Далее</button>
+            `;
+        }
+
+        window.selectAnswer = function(index) {
+            selectedAnswer = index;
+            renderQuestion(); // перерисовываем, чтобы подсветить выбранный вариант
+        };
+
+        function handleNext() {
+            if (selectedAnswer === null) return;
+
+            // Добавляем баллы
+            const q = questions[currentQuestionIndex];
+            const ans = q.answers[selectedAnswer];
+            for (let category in ans.scores) {
+                scores[category] += ans.scores[category];
+            }
+
+            // Переходим к следующему вопросу или завершаем
+            if (currentQuestionIndex + 1 < questions.length) {
+                currentQuestionIndex++;
+                selectedAnswer = null;
+                renderQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            // Находим категорию с максимальным баллом
+            let maxCategory = null;
+            let maxScore = -1;
+            for (let category in scores) {
+                if (scores[category] > maxScore) {
+                    maxScore = scores[category];
+                    maxCategory = category;
+                }
+            }
+
+            // Выбираем случайную профессию из двух в этой категории
+            const professions = professionMap[maxCategory];
+            const randomIndex = Math.floor(Math.random() * professions.length);
+            const profession = professions[randomIndex];
+
+            testCard.innerHTML = `
+                <div class="result-block">
+                    <div class="result-title">${profession.title}</div>
+                    <div class="result-desc">${profession.desc}</div>
+                    <button class="restart-btn" onclick="restartTest()">Начать заново</button>
+                </div>
+            `;
+        }
+
+        window.restartTest = function() {
+            currentQuestionIndex = 0;
+            scores = { it:0, design:0, marketing:0, management:0, construction:0, medicine:0, education:0, law:0 };
+            selectedAnswer = null;
+            renderQuestion();
+        };
+
+        // Обработчик клика на кнопку "Далее" (делегирование)
+        testCard.addEventListener('click', (e) => {
+            if (e.target.classList.contains('next-btn')) {
+                handleNext();
+            }
+        });
+
+        // Инициализация первого вопроса
+        renderQuestion();
+    </script>
+</body>
+</html>
