@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профессия по душе</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+        body {
+            background: #f4f6fb;
+            color: #333;
+            line-height: 1.5;
+        }
+        /* HEADER */
+        header {
+            background: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #4a6cf7;
+            letter-spacing: -0.5px;
+        }
+        .nav a {
+            margin-left: 30px;
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .nav a:hover {
+            color: #4a6cf7;
+        }
+
+        /* HERO */
+        .hero {
+            position: relative;
+            text-align: center;
+            padding: 140px 20px;
+            color: white;
+            background-image: url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center 30%;
+            isolation: isolate;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: -1;
+        }
+        .hero h1 {
+            font-size: 52px;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 35px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.95;
+        }
+        .btn {
+            background: white;
+            color: #4a6cf7;
+            padding: 16px 36px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 18px;
+            display: inline-block;
+            transition: 0.3s;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        .btn:hover {
+            background: #f0f3ff;
+            transform: scale(1.05);
+        }
+
+        /* ABOUT */
+        .about {
+            text-align: center;
+            padding: 80px 20px;
+            background: #fff;
+        }
+        .about h2 {
+            margin-bottom: 20px;
+            font-size: 36px;
+            color: #222;
+        }
+        .about p {
+            max-width: 700px;
+            margin: 0 auto 40px;
+            font-size: 18px;
+            color: #555;
+        }
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            flex-wrap: wrap;
+            margin: 50px 0 20px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 44px;
+            font-weight: 800;
+            color: #4a6cf7;
+            line-height: 1.2;
+        }
+        .stat-label {
+            font-size: 16px;
+            color: #777;
+        }
+
+        /* SUPPORT MESSAGE (вместо карточек) */
+        .support-message {
+            background: #f0f4ff;
+            text-align: center;
+            padding: 80px 20px;
+        }
+        .support-message h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            color: #222;
+        }
+        .support-message p {
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 18px;
+            color: #555;
+        }
+
+        /* TESTIMONIALS */
+        .testimonials {
+            background: #f0f4ff;
+            padding: 70px 20px;
+            text-align: center;
+        }
+        .testimonials h2 {
+            font-size: 36px;
+            margin-bottom: 50px;
+        }
+        .testimonial-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .testimonial-card {
+            background: white;
+            width: 300px;
+            padding: 30px 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            text-align: left;
+        }
+        .testimonial-card p {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #4a6cf7;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .author-info h4 {
+            font-size: 18px;
+        }
+        .author-info span {
+            font-size: 14px;
+            color: #888;
+        }
+
+        /* CTA */
+        .cta {
+            background: #4a6cf7;
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+        }
+        .cta h2 {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+        .cta .btn-white {
+            background: white;
+            color: #4a6cf7;
+            padding: 16px 40px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 18px;
+            text-decoration: none;
+            display: inline-block;
+            transition: 0.3s;
+        }
+        .cta .btn-white:hover {
+            background: #f0f3ff;
+            transform: scale(1.05);
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: #222;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+                flex-wrap: wrap;
+            }
+            .nav a {
+                margin-left: 20px;
+                font-size: 14px;
+            }
+            .hero h1 {
+                font-size: 36px;
+            }
+            .hero p {
+                font-size: 18px;
+            }
+            .stats {
+                gap: 25px;
+            }
+            .stat-number {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">Профессия по душе</div>
+        <div class="nav">
+            <a href="index.html">Главная</a>
+            <a href="test.html">Тест</a>
+            <a href="work.html">Профессии</a>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>Найди профессию своей мечты</h1>
+        <p>Пройди небольшой тест и узнай, какая сфера подходит тебе больше всего — от IT до строительства</p>
+        <a href="work.html" class="btn">Профессии</a>
+    </section>
+
+    <!-- Вместо карточек теперь текст поддержки -->
+    <section class="support-message">
+        <h2>Мы всегда рядом</h2>
+        <p>Если у тебя возникают вопросы или нужна дополнительная помощь, наши специалисты готовы поддержать тебя на пути к выбору профессии. Обращайся за советом в любое время!</p>
+    </section>
+
+    <section class="about" id="about">
+        <h2>Помогаем найти себя</h2>
+        <p>Мы создали этот сайт, чтобы каждый мог определить направление будущей профессии. Наш тест основан на реальных предпочтениях и навыках, а результаты уже помогли более 5000 человек.</p>
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">5000+</div>
+                <div class="stat-label">прошедших тест</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">5</div>
+                <div class="stat-label">профессиональных сфер</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">10</div>
+                <div class="stat-label">вопросов</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <h2>Что говорят наши пользователи</h2>
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <p>«После теста понял, что мне действительно интересно программирование. Сейчас учусь на frontend-разработчика.»</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">А</div>
+                    <div class="author-info">
+                        <h4>Алексей</h4>
+                        <span>IT-стажёр</span>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <p>«Всегда любил рисовать, но не думал, что дизайн может быть профессией. Спасибо за подсказку!»</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">М</div>
+                    <div class="author-info">
+                        <h4>Мария</h4>
+                        <span>UX/UI дизайнер</span>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <p>«Строительство оказалось моим призванием. Тест указал на это, и теперь я прораб на крупном объекте.»</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">Д</div>
+                    <div class="author-info">
+                        <h4>Дмитрий</h4>
+                        <span>прораб</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <h2>Готов узнать свою идеальную профессию?</h2>
+        <a href="test.html" class="btn-white">Пройти тест</a>
+    </section>
+
+    <footer>
+        © 2026 Профессия по душе. Все права защищены.
+    </footer>
+</body>
+</html>
