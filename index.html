@@ -1,356 +1,404 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Профессия по душе</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
-        }
-        body {
-            background: #f4f6fb;
-            color: #333;
-            line-height: 1.5;
-        }
-        /* HEADER */
-        header {
-            background: white;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 40px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: 700;
-            color: #4a6cf7;
-            letter-spacing: -0.5px;
-        }
-        .nav a {
-            margin-left: 30px;
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-            transition: 0.2s;
-        }
-        .nav a:hover {
-            color: #4a6cf7;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Профессия по душе</title>
 
-        /* HERO */
-        .hero {
-            position: relative;
-            text-align: center;
-            padding: 140px 20px;
-            color: white;
-            background-image: url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2070&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center 30%;
-            isolation: isolate;
-        }
-        .hero::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: -1;
-        }
-        .hero h1 {
-            font-size: 52px;
-            margin-bottom: 20px;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
-        .hero p {
-            font-size: 20px;
-            margin-bottom: 35px;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-            opacity: 0.95;
-        }
-        .btn {
-            background: white;
-            color: #4a6cf7;
-            padding: 16px 36px;
-            border-radius: 40px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 18px;
-            display: inline-block;
-            transition: 0.3s;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-        }
-        .btn:hover {
-            background: #f0f3ff;
-            transform: scale(1.05);
-        }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
 
-        /* ABOUT */
-        .about {
-            text-align: center;
-            padding: 80px 20px;
-            background: #fff;
-        }
-        .about h2 {
-            margin-bottom: 20px;
-            font-size: 36px;
-            color: #222;
-        }
-        .about p {
-            max-width: 700px;
-            margin: 0 auto 40px;
-            font-size: 18px;
-            color: #555;
-        }
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 50px;
-            flex-wrap: wrap;
-            margin: 50px 0 20px;
-        }
-        .stat-item {
-            text-align: center;
-        }
-        .stat-number {
-            font-size: 44px;
-            font-weight: 800;
-            color: #4a6cf7;
-            line-height: 1.2;
-        }
-        .stat-label {
-            font-size: 16px;
-            color: #777;
-        }
+body{
+  background:#fff;
+  color:#000;
+  overflow-x:hidden;
+}
 
-        /* SUPPORT MESSAGE (вместо карточек) */
-        .support-message {
-            background: #f0f4ff;
-            text-align: center;
-            padding: 80px 20px;
-        }
-        .support-message h2 {
-            font-size: 36px;
-            margin-bottom: 20px;
-            color: #222;
-        }
-        .support-message p {
-            max-width: 700px;
-            margin: 0 auto;
-            font-size: 18px;
-            color: #555;
-        }
+/* BACKGROUND PATTERN */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(0,0,0,0.05) 2px, transparent 2px),
+    radial-gradient(circle at 70% 60%, rgba(0,0,0,0.05) 2px, transparent 2px);
+  background-size:120px 120px;
+  z-index:-1;
+}
 
-        /* TESTIMONIALS */
-        .testimonials {
-            background: #f0f4ff;
-            padding: 70px 20px;
-            text-align: center;
-        }
-        .testimonials h2 {
-            font-size: 36px;
-            margin-bottom: 50px;
-        }
-        .testimonial-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            justify-content: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .testimonial-card {
-            background: white;
-            width: 300px;
-            padding: 30px 25px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            text-align: left;
-        }
-        .testimonial-card p {
-            font-style: italic;
-            color: #555;
-            margin-bottom: 20px;
-        }
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        .author-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: #4a6cf7;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 20px;
-        }
-        .author-info h4 {
-            font-size: 18px;
-        }
-        .author-info span {
-            font-size: 14px;
-            color: #888;
-        }
+header{
+  display:flex;
+  justify-content:space-between;
+  padding:20px 40px;
+}
 
-        /* CTA */
-        .cta {
-            background: #4a6cf7;
-            color: white;
-            text-align: center;
-            padding: 80px 20px;
-        }
-        .cta h2 {
-            font-size: 40px;
-            margin-bottom: 20px;
-        }
-        .cta .btn-white {
-            background: white;
-            color: #4a6cf7;
-            padding: 16px 40px;
-            border-radius: 40px;
-            font-weight: 700;
-            font-size: 18px;
-            text-decoration: none;
-            display: inline-block;
-            transition: 0.3s;
-        }
-        .cta .btn-white:hover {
-            background: #f0f3ff;
-            transform: scale(1.05);
-        }
+.nav a{
+  margin-left:20px;
+  text-decoration:none;
+  color:#000;
+  opacity:.7;
+  position:relative;
+  display:inline-block;
+  padding-bottom:4px;
+  transition:opacity .25s ease, transform .25s ease;
+}
 
-        /* FOOTER */
-        footer {
-            text-align: center;
-            padding: 30px;
-            background: #222;
-            color: #aaa;
-            font-size: 14px;
-        }
+.nav a::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:100%;
+  height:2px;
+  background:linear-gradient(90deg,#000,#6b6bff,#000);
+  background-size:200% 100%;
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform .3s ease;
+}
 
-        /* MOBILE */
-        @media (max-width: 768px) {
-            header {
-                padding: 15px 20px;
-                flex-wrap: wrap;
-            }
-            .nav a {
-                margin-left: 20px;
-                font-size: 14px;
-            }
-            .hero h1 {
-                font-size: 36px;
-            }
-            .hero p {
-                font-size: 18px;
-            }
-            .stats {
-                gap: 25px;
-            }
-            .stat-number {
-                font-size: 36px;
-            }
-        }
-    </style>
+.nav a:hover{
+  opacity:1;
+  transform:translateY(-2px);
+}
+
+.nav a:hover::after{
+  transform:scaleX(1);
+  animation:linkShimmer 1.2s linear infinite;
+}
+
+/* HERO */
+.hero{
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.hero h1{
+  font-size:120px;
+  font-weight:900;
+  color:#fff;
+  -webkit-text-stroke:2px #000;
+  letter-spacing:-2px;
+  animation:fadeUp 1s ease forwards;
+  opacity:0;
+}
+
+.hero-title-wrap{
+  position:relative;
+  display:inline-block;
+}
+
+.hero-profession-link{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%, -35%) scale(.92);
+  font-size:28px;
+  font-weight:700;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  color:#000;
+  background:rgba(255,255,255,.96);
+  border:1px solid #000;
+  border-radius:999px;
+  padding:10px 18px;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .3s ease, transform .3s ease;
+  box-shadow:0 10px 22px rgba(0,0,0,.15);
+  text-decoration:none;
+}
+
+.hero-title-wrap:hover .hero-profession-link{
+  opacity:1;
+  transform:translate(-50%, -50%) scale(1);
+  pointer-events:auto;
+}
+
+.hero p{
+  margin-top:20px;
+  font-size:20px;
+  animation:fadeUp 1.3s ease forwards;
+  opacity:0;
+}
+
+.btn{
+  margin-top:30px;
+  display:inline-block;
+  padding:14px 30px;
+  border:1px solid #000;
+  text-decoration:none;
+  color:#000;
+  border-radius:999px;
+  position:relative;
+  overflow:hidden;
+  transition:.3s;
+  animation:fadeUp 1.6s ease forwards;
+  opacity:0;
+}
+
+.btn::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(120deg, transparent 30%, rgba(255,255,255,.8) 50%, transparent 70%);
+  transform:translateX(-150%);
+}
+
+.btn:hover{
+  background:#000;
+  color:#fff;
+  transform:translateY(-2px);
+  box-shadow:0 12px 20px rgba(0,0,0,.2);
+}
+
+.btn:hover::before{
+  animation:buttonSweep .9s ease;
+}
+
+/* SECTION */
+.section{
+  padding:120px 20px;
+  text-align:center;
+}
+
+.section h2{
+  font-size:42px;
+  margin-bottom:20px;
+}
+
+.section p{
+  max-width:700px;
+  margin:0 auto;
+  opacity:.7;
+}
+
+/* SCROLL BADGES */
+.scroll-badges{
+  position:fixed;
+  left:50%;
+  bottom:24px;
+  transform:translate(-50%, 30px);
+  opacity:0;
+  pointer-events:none;
+  display:flex;
+  gap:14px;
+  z-index:50;
+  transition:opacity .35s ease, transform .35s ease;
+}
+
+.scroll-badges.show{
+  opacity:1;
+  transform:translate(-50%, 0);
+  pointer-events:auto;
+}
+
+.badge{
+  min-width:220px;
+  padding:18px 22px;
+  border:1px solid #000;
+  border-radius:18px;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(4px);
+  text-align:center;
+  transition:transform .28s ease, box-shadow .28s ease, background .28s ease;
+}
+
+.badge strong{
+  display:block;
+  font-size:22px;
+}
+
+.badge span{
+  font-size:15px;
+  opacity:.7;
+}
+
+.badge:hover{
+  transform:scale(1.08);
+  box-shadow:0 10px 22px rgba(0,0,0,.18);
+  background:#fff;
+}
+
+/* ANIMATION */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(40px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+@keyframes linkShimmer{
+  from{background-position:0 0}
+  to{background-position:200% 0}
+}
+
+@keyframes buttonSweep{
+  to{transform:translateX(150%)}
+}
+
+/* CURSOR TRAIL */
+.trail{
+  position:fixed;
+  width:5px;
+  height:5px;
+  margin-left:-2px;
+  margin-top:-2px;
+  border:1px solid rgba(0,0,0,.22);
+  background:rgba(0,0,0,.06);
+  pointer-events:none;
+  border-radius:0;
+  animation:fadeOut 1s forwards;
+}
+
+@keyframes fadeOut{
+  to{opacity:0;transform:scale(1.8)}
+}
+
+footer{
+  text-align:center;
+  padding:40px;
+  opacity:.5;
+}
+
+.footer-info{
+  margin:40px auto 0;
+  width:min(900px, 92%);
+  border:1px solid #000;
+  border-radius:16px;
+  padding:18px 20px;
+  background:rgba(255,255,255,.9);
+  display:flex;
+  justify-content:space-between;
+  gap:16px;
+  font-size:14px;
+}
+
+.footer-info a{
+  color:#000;
+  text-decoration:none;
+  border-bottom:1px dashed #000;
+}
+
+@media (max-width:768px){
+  .hero h1{font-size:72px}
+  .hero-profession-link{
+    font-size:16px;
+    letter-spacing:2px;
+    padding:8px 12px;
+  }
+  .scroll-badges{
+    width:92%;
+    justify-content:center;
+    gap:8px;
+  }
+  .badge{
+    min-width:unset;
+    flex:1;
+    padding:10px 8px;
+  }
+  .badge strong{font-size:14px}
+  .badge span{font-size:12px}
+  .footer-info{
+    flex-direction:column;
+    font-size:13px;
+  }
+}
+
+</style>
 </head>
+
 <body>
-   
-    <header>
-        <div class="logo">Профессия по душе</div>
-        <div class="nav">
-            <a href="index.html">Главная</a>
-            <a href="test.html">Тест</a>
-            <a href="work.html">Профессии</a>
-        </div>
-    </header>
 
-    <section class="hero">
-        <h1>Найди профессию своей мечты</h1>
-        <p>Пройди небольшой тест и узнай, какая сфера подходит тебе больше всего — от IT до строительства</p>
-        <a href="work.html" class="btn">Профессии</a>
-    </section>
+<header>
+<div>Профессия</div>
+<div class="nav">
+<a href="index.html">Главная</a>
+<a href="test.html">Тест</a>
+<a href="work.html">Профессии</a>
+</div>
+</header>
 
-    <!-- Вместо карточек теперь текст поддержки -->
-    <section class="support-message">
-        <h2>Мы всегда рядом</h2>
-        <p>Если у тебя возникают вопросы или нужна дополнительная помощь, наши специалисты готовы поддержать тебя на пути к выбору профессии. Обращайся за советом в любое время!</p>
-    </section>
+<section class="hero">
+<div>
+<div class="hero-title-wrap">
+<h1>КТО ТЫ?</h1>
+<a href="work.html" class="hero-profession-link">Профессия</a>
+</div>
+<p>Выбери свою профессию</p>
+<a href="test.html" class="btn">Пройти тест</a>
+</div>
+</section>
 
-    <section class="about" id="about">
-        <h2>Помогаем найти себя</h2>
-        <p>Мы создали этот сайт, чтобы каждый мог определить направление будущей профессии. Наш тест основан на реальных предпочтениях и навыках, а результаты уже помогли более 5000 человек.</p>
-        <div class="stats">
-            <div class="stat-item">
-                <div class="stat-number">5000+</div>
-                <div class="stat-label">прошедших тест</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">5</div>
-                <div class="stat-label">профессиональных сфер</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">10</div>
-                <div class="stat-label">вопросов</div>
-            </div>
-        </div>
-    </section>
+<div class="scroll-badges" id="scrollBadges">
+  <div class="badge">
+    <strong>IT</strong>
+    <span>Код и технологии</span>
+  </div>
+  <div class="badge">
+    <strong>Дизайн</strong>
+    <span>Креатив и визуал</span>
+  </div>
+  <div class="badge">
+    <strong>Маркетинг</strong>
+    <span>Продвижение идей</span>
+  </div>
+  <div class="badge">
+    <strong>Медицина</strong>
+    <span>Помощь и здоровье</span>
+  </div>
+  <div class="badge">
+    <strong>Юриспруденция</strong>
+    <span>Право и защита</span>
+  </div>
+  <div class="badge">
+    <strong>Архитектура</strong>
+    <span>Проекты и здания</span>
+  </div>
+</div>
 
-    <section class="testimonials">
-        <h2>Что говорят наши пользователи</h2>
-        <div class="testimonial-grid">
-            <div class="testimonial-card">
-                <p>«После теста понял, что мне действительно интересно программирование. Сейчас учусь на frontend-разработчика.»</p>
-                <div class="testimonial-author">
-                    <div class="author-avatar">А</div>
-                    <div class="author-info">
-                        <h4>Алексей</h4>
-                        <span>IT-стажёр</span>
-                    </div>
-                </div>
-            </div>
-            <div class="testimonial-card">
-                <p>«Всегда любил рисовать, но не думал, что дизайн может быть профессией. Спасибо за подсказку!»</p>
-                <div class="testimonial-author">
-                    <div class="author-avatar">М</div>
-                    <div class="author-info">
-                        <h4>Мария</h4>
-                        <span>UX/UI дизайнер</span>
-                    </div>
-                </div>
-            </div>
-            <div class="testimonial-card">
-                <p>«Строительство оказалось моим призванием. Тест указал на это, и теперь я прораб на крупном объекте.»</p>
-                <div class="testimonial-author">
-                    <div class="author-avatar">Д</div>
-                    <div class="author-info">
-                        <h4>Дмитрий</h4>
-                        <span>прораб</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<section class="footer-info">
+  <div>© 2026 Профессия по душе. Все права защищены.</div>
+  <div>Контакты: <a href="mailto:profguide@mail.ru">profguide@mail.ru</a> | +7 (900) 123-45-67</div>
+</section>
 
-    <section class="cta">
-        <h2>Готов узнать свою идеальную профессию?</h2>
-        <a href="test.html" class="btn-white">Пройти тест</a>
-    </section>
+<footer>© 2026</footer>
 
-    <footer>
-        © 2026 Профессия по душе. Все права защищены.
-    </footer>
+<script>
+// cursor trail (редко: только если курсор сдвинулся достаточно далеко)
+let trailLastX = null;
+let trailLastY = null;
+const trailMinDist = 28;
+window.addEventListener('mousemove', e=>{
+  if (trailLastX !== null) {
+    const dx = e.clientX - trailLastX;
+    const dy = e.clientY - trailLastY;
+    if (dx * dx + dy * dy < trailMinDist * trailMinDist) return;
+  }
+  trailLastX = e.clientX;
+  trailLastY = e.clientY;
+  const el = document.createElement('div');
+  el.className='trail';
+  el.style.left=e.clientX+'px';
+  el.style.top=e.clientY+'px';
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),1000);
+});
+
+// show badges after scrolling down
+const scrollBadges = document.getElementById('scrollBadges');
+const toggleBadges = () => {
+  if (window.scrollY > 120) {
+    scrollBadges.classList.add('show');
+  } else {
+    scrollBadges.classList.remove('show');
+  }
+};
+
+window.addEventListener('scroll', toggleBadges);
+toggleBadges();
+</script>
+
 </body>
 </html>
