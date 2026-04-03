@@ -12,40 +12,67 @@
             font-family: 'Segoe UI', Roboto, Arial, sans-serif;
         }
         body {
-            background: linear-gradient(135deg, #f4f6fb 0%, #e9eefa 100%);
-            color: #333;
+            background: #fff;
+            color: #000;
             line-height: 1.5;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(0,0,0,0.05) 2px, transparent 2px),
+                radial-gradient(circle at 70% 60%, rgba(0,0,0,0.05) 2px, transparent 2px);
+            background-size: 120px 120px;
+            z-index: -1;
         }
         /* HEADER (как на главной) */
         header {
-            background: white;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 40px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            padding: 20px 40px;
         }
         .logo {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
-            color: #4a6cf7;
-            letter-spacing: -0.5px;
+            letter-spacing: -0.3px;
         }
         .nav a {
-            margin-left: 30px;
+            margin-left: 20px;
             text-decoration: none;
-            color: #333;
+            color: #000;
             font-weight: 500;
-            transition: 0.2s;
+            opacity: 0.7;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 4px;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+        .nav a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, #000, #6b6bff, #000);
+            background-size: 200% 100%;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
         }
         .nav a:hover {
-            color: #4a6cf7;
+            opacity: 1;
+            transform: translateY(-2px);
+        }
+        .nav a:hover::after {
+            transform: scaleX(1);
+            animation: navPulse 1.2s linear infinite;
         }
 
         /* Основной контейнер теста */
@@ -59,9 +86,9 @@
         }
 
         .test-card {
-            background: white;
-            border-radius: 40px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            background: rgba(255,255,255,0.92);
+            border: 1px solid #000;
+            border-radius: 24px;
             width: 100%;
             max-width: 700px;
             padding: 40px;
@@ -74,13 +101,13 @@
         }
         .progress-bar {
             height: 8px;
-            background: #e0e7ff;
+            background: #ececec;
             border-radius: 20px;
             overflow: hidden;
         }
         .progress-fill {
             height: 100%;
-            background: #4a6cf7;
+            background: #000;
             width: 0%;
             transition: width 0.3s ease;
             border-radius: 20px;
@@ -88,7 +115,7 @@
         .progress-text {
             text-align: right;
             font-size: 14px;
-            color: #666;
+            opacity: 0.6;
             margin-top: 8px;
         }
 
@@ -97,7 +124,6 @@
             font-size: 24px;
             font-weight: 600;
             margin-bottom: 30px;
-            color: #222;
             line-height: 1.4;
         }
 
@@ -109,49 +135,50 @@
         }
 
         .answer-btn {
-            background: #f8faff;
-            border: 2px solid transparent;
-            border-radius: 30px;
+            background: #fff;
+            border: 1px solid #000;
+            border-radius: 14px;
             padding: 16px 24px;
             font-size: 16px;
             text-align: left;
             cursor: pointer;
             transition: all 0.2s;
-            color: #333;
+            color: #000;
             font-weight: 500;
         }
 
         .answer-btn:hover {
-            background: #e9efff;
-            border-color: #4a6cf7;
+            background: #f5f5f5;
             transform: scale(1.01);
         }
 
         /* Кнопка "Далее" */
         .next-btn {
-            background: #4a6cf7;
-            color: white;
-            border: none;
-            border-radius: 40px;
+            background: #fff;
+            color: #000;
+            border: 1px solid #000;
+            border-radius: 999px;
             padding: 16px 30px;
             font-size: 18px;
             font-weight: 600;
             cursor: pointer;
             width: 100%;
             transition: 0.3s;
-            box-shadow: 0 8px 20px rgba(74,108,247,0.3);
             margin-top: 20px;
         }
 
         .next-btn:disabled {
-            background: #b7c4ff;
+            background: #f0f0f0;
+            color: #888;
+            border-color: #c9c9c9;
             cursor: not-allowed;
-            box-shadow: none;
         }
 
         .next-btn:hover:not(:disabled) {
-            background: #3a5be0;
+            background: #000;
+            color: #fff;
             transform: translateY(-2px);
+            box-shadow: 0 12px 22px rgba(0,0,0,0.16);
         }
 
         /* Результат */
@@ -162,30 +189,30 @@
         .result-title {
             font-size: 32px;
             font-weight: 700;
-            color: #4a6cf7;
             margin-bottom: 15px;
         }
         .result-desc {
             font-size: 18px;
-            color: #555;
+            opacity: 0.75;
             margin-bottom: 30px;
         }
         .restart-btn {
-            background: #4a6cf7;
-            color: white;
-            border: none;
-            border-radius: 40px;
+            background: #fff;
+            color: #000;
+            border: 1px solid #000;
+            border-radius: 999px;
             padding: 16px 30px;
             font-size: 18px;
             font-weight: 600;
             cursor: pointer;
             transition: 0.3s;
-            box-shadow: 0 8px 20px rgba(74,108,247,0.3);
             margin-top: 20px;
         }
         .restart-btn:hover {
-            background: #3a5be0;
+            background: #000;
+            color: #fff;
             transform: scale(1.02);
+            box-shadow: 0 12px 22px rgba(0,0,0,0.16);
         }
 
         /* Ссылка на рандомайзер */
@@ -194,30 +221,50 @@
             text-align: center;
         }
         .randomizer-link a {
-            background: white;
-            color: #4a6cf7;
+            background: #fff;
+            color: #000;
             text-decoration: none;
             padding: 14px 28px;
-            border-radius: 40px;
+            border-radius: 999px;
+            border: 1px solid #000;
             font-weight: 600;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             transition: 0.3s;
             display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+        .randomizer-link a::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.8) 50%, transparent 70%);
+            transform: translateX(-150%);
         }
         .randomizer-link a:hover {
-            background: #e9efff;
-            transform: scale(1.02);
-            box-shadow: 0 8px 20px rgba(74,108,247,0.2);
+            background: #000;
+            color: #fff;
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 12px 22px rgba(0,0,0,0.16);
+        }
+        .randomizer-link a:hover::before {
+            animation: linkSweep 0.9s ease;
         }
 
         /* FOOTER (как на главной) */
         footer {
             text-align: center;
             padding: 30px;
-            background: #222;
-            color: #aaa;
+            opacity: 0.6;
             font-size: 14px;
             margin-top: 40px;
+        }
+
+        @keyframes navPulse {
+            from { background-position: 0 0; }
+            to { background-position: 200% 0; }
+        }
+        @keyframes linkSweep {
+            to { transform: translateX(150%); }
         }
 
         @media (max-width: 768px) {
@@ -607,7 +654,7 @@
 
             let answersHtml = '';
             q.answers.forEach((ans, idx) => {
-                const checkedAttr = (selectedAnswer === idx) ? 'style="background: #e9efff; border-color: #4a6cf7;"' : '';
+                const checkedAttr = (selectedAnswer === idx) ? 'style="background:#f5f5f5; border-color:#000;"' : '';
                 answersHtml += `<div class="answer-btn" onclick="selectAnswer(${idx})" ${checkedAttr}>${ans.text}</div>`;
             });
 
